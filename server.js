@@ -42,11 +42,25 @@ app.post('/shopping-list', jsonParser, (req, res) => {
       return res.status(400).send(message);
     }
   }
-
-  const item = ShoppingList.create(req.body.name, req.body.budget);
+ const item = ShoppingList.create(req.body.name, req.body.budget);
   res.status(201).json(item);
 });
 
+//post method for Recipes models
+
+app.post('/recipes', jsonParser, (req,res) => {
+  const fields = ['name' , 'ingredients'];
+  for(let i=0;i<fields.length;i++){
+    const field = fields[i];
+    if(!(field in req.body)){
+      const message = `Missing \`${field}\`in request body`
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+  const item = Recipes.create(req.body.name,req.body.ingredients)
+  res.status(201).json(item);
+})  ;
 
 app.get('/recipes', (req, res) => {
   res.json(Recipes.get());
